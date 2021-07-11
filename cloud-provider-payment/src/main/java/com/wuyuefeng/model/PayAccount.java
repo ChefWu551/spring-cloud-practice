@@ -2,6 +2,8 @@ package com.wuyuefeng.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class PayAccount {
 
@@ -9,6 +11,6 @@ public class PayAccount {
 
     private String accountName;
 
-    private double accountMoney;
+    private BigDecimal accountMoney;
 
 }

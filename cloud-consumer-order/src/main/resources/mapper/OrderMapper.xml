@@ -3,6 +3,7 @@
 <mapper namespace="com.wuyuefeng.dao.OrderDao">
     <resultMap id="BaseResultMap" type="com.wuyuefeng.model.Order">
         <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="account_id" jdbcType="INTEGER" property="accountId" />
         <result column="product_id" jdbcType="INTEGER" property="productId" />
         <result column="product_name" jdbcType="VARCHAR" property="productName" />
         <result column="num" jdbcType="INTEGER" property="num" />
@@ -10,11 +11,17 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, product_id, product_name, num, price
+        id, account_id, product_id, product_name, num, price
     </sql>
 
     <select id="selectOrderById" resultMap="BaseResultMap">
-        select id, product_id, product_name, num, price from orders where id = #{id}
+        select id, account_id, product_id, product_name, num, price from orders where id = #{id}
     </select>
+
+    <insert id="insertOrder" parameterType="com.wuyuefeng.model.Order">
+        insert into orders (account_id, product_id, product_name, num, price)
+        VALUE (#{accountId}, #{productId}, #{productName}, #{num}, #{price});
+    </insert>
+
 
 </mapper>

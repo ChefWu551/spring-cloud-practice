@@ -7,6 +7,8 @@ import com.wuyuefeng.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("pay")
 public class PayController {
@@ -23,5 +25,10 @@ public class PayController {
     public JSONObject getAccountInfo(@PathVariable Integer id) {
         PayAccount account = payService.getAccountInfo(id);
         return ResponseMsg.success(account);
+    }
+
+    @GetMapping ("money")
+    public JSONObject payMoney(Integer accountId, Long money) {
+        return payService.pay(accountId, money);
     }
 }

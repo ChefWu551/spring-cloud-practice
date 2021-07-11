@@ -4,18 +4,17 @@ create database sc_order;
 
 use sc_order;
 
-create table sc_order(
-    id integer auto_increment primary key not null ,
-    productId Integer default null comment '商品id',
-    productName varchar(100) default null comment '商品名称',
-    num integer default 0 comment '数量',
-    price double default 0.0 comment '价格'
+drop table orders;
+
+create table orders (
+                        id integer auto_increment primary key not null ,
+                        account_id INTEGER NOT NULL COMMENT '账户id',
+                        product_id Integer not null comment '商品id',
+                        product_name varchar(100) default null comment '商品名称',
+                        num integer default 0 comment '数量',
+                        price double default 0.0 comment '价格'
 );
 
-select * from sc_order;
+select * from orders;
 
-insert into sc_order (productId, productName, num, price) VALUE (1, '华为手机p40', 2, 4500);
-
-
-
-
+insert into orders (account_id, product_id, product_name, num, price) VALUE (1, 1, '华为手机p40', 2, 4500);

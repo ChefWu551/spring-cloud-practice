@@ -14,4 +14,7 @@
         select id, account_name, account_money from user_account where id = #{id}
     </select>
 
+    <update id="descAccountMoney">
+        update user_account set account_money = #{accountMoney} where id = #{accountId}
+    </update>
 </mapper>

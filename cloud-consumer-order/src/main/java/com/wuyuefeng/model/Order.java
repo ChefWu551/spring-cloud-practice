@@ -7,6 +7,8 @@ public class Order {
 
     private Integer id;
 
+    private Integer accountId;
+
     private Integer productId;
 
     private String productName;

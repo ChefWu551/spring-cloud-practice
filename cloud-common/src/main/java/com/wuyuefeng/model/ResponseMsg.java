@@ -26,6 +26,10 @@ public class ResponseMsg<T> {
         return generalResult("fail", ResponseCode.NOT_RESOURCE, "Internal Error");
     }
 
+    public static JSONObject fail(String msg){
+        return generalResult("fail", ResponseCode.NOT_RESOURCE, msg);
+    }
+
     private static <T> JSONObject generalResult(String status, Integer code, T data) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", status);

@@ -34,11 +34,11 @@ public class PayService {
         // 余额不足，支付失败
         BigDecimal shouldPay = new BigDecimal(money / MoneyConstant.MONEY_ENLARGE);
         if (currentAccountMoney.subtract(shouldPay).compareTo(new BigDecimal(0)) < 0)
-            return ResponseMsg.fail("余额不足; 服务1");
+            return ResponseMsg.fail("余额不足; 服务2");
         // 账户剩余金额
         BigDecimal accountMoney = currentAccountMoney.subtract(shouldPay);
         Integer num = payDao.descAccountMoney(accountId, accountMoney);
-        if (num == 1) return ResponseMsg.success("支付成功; 服务1");
-        return ResponseMsg.fail("支付失败; 服务1");
+        if (num == 1) return ResponseMsg.success("支付成功; 服务2");
+        return ResponseMsg.fail("支付失败; 服务2");
     }
 }

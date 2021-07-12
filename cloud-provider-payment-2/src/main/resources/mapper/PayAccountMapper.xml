@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuyuefeng.dao.PayDao">
+    <resultMap id="BaseResultMap" type="com.wuyuefeng.model.PayAccount">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+        <result column="account_money" jdbcType="DECIMAL" property="accountMoney" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, account_name, account_money
+    </sql>
+
+    <select id="selectAccountById" resultMap="BaseResultMap">
+        select id, account_name, account_money from user_account where id = #{id}
+    </select>
+
+    <update id="descAccountMoney">
+        update user_account set account_money = #{accountMoney} where id = #{accountId}
+    </update>
+</mapper>

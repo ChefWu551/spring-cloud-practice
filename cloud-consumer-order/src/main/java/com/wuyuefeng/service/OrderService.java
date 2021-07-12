@@ -11,8 +11,10 @@ import javax.annotation.Resource;
 
 @Service
 public class OrderService {
-
-    private static final String PAYMENT_URL = "http://localhost:8081/pay/money?accountId=1&money=";
+    // 默认的静态地址
+//    private static final String PAYMENT_URL = "http://localhost:8081/pay/money?accountId=1&money=";
+    // 直接使用eureka的服务地址
+    private static final String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVER/pay/money?accountId=1&money=";
 
     @Autowired
     RestTemplate restTemplate;

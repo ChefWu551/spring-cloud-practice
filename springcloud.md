@@ -64,6 +64,87 @@
     @EnableEurekaClient
     ```
 
+#### 1.2. 集群版本
+
+![eureka-server-client-cluster](./resource/image/eureka-server-client-cluster.png)
+
+##### 1.2.1. eureka集群
+
+	- Eureka1:
+
+```properties
+server.port=7001
+
+eureka.instance.hostname=eureka7001.com
+# 表示不向注册中心注册自己
+eureka.client.register-with-eureka=false
+# 表示自己端就是注册中心，我的职责就是维护服务器实例，并不需要检索服务
+eureka.client.fetch-registry=false
+eureka.client.service-url.defaultZone=http://eureka7002.com:7002/eureka/
+```
+
+- Eureka2:
+
+```properties
+server.port=7002
+
+eureka.instance.hostname=eureka7002.com
+# 表示不向注册中心注册自己
+eureka.client.register-with-eureka=false
+# 表示自己端就是注册中心，我的职责就是维护服务器实例，并不需要检索服务
+eureka.client.fetch-registry=false
+# 在7001注册7002服务
+eureka.client.service-url.defaultZone=http://eureka7001.com:7001/eureka/
+```
+
+##### 1.2.2. 支付服务集群
+
+- payment-server1
+
+```properties
+server.port=8081
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/sc_payment?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+spring.datasource.username=root
+spring.datasource.password=rootroot
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+mybatis.mapperLocations=classpath:mapper/*.xml
+mybatis.typeAliasesPackage=com.wuyuefeng.model
+
+spring.application.name=cloud-payment-server
+
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+eureka.client.service-url.defaultZone=http://eureka7001.com:7001/eureka, http://eureka7002.com:7002/eureka
+```
+
+- payment-server2
+
+```properties
+server.port=8082
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/sc_payment?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+spring.datasource.username=root
+spring.datasource.password=rootroot
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+mybatis.mapperLocations=classpath:mapper/*.xml
+mybatis.typeAliasesPackage=com.wuyuefeng.model
+
+spring.application.name=cloud-payment-server
+
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+eureka.client.service-url.defaultZone=http://eureka7001.com:7001/eureka, http://eureka7002.com:7002/eureka
+```
+
+##### 1.2.3. 订单中心修改
+
+- 指定支付服务的路径
+
+  **地址使用eureka注册中心的地址，而不是服务本身的地址：http://CLOUD-PAYMENT-SERVER**
+
+- 使用template调用负载均衡
+
+  **在template bean中添加注解@Loadblanced**
+
 ### 2. zookeeper
 
 ### 3. consul

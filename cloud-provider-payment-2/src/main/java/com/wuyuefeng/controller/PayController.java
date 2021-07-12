@@ -17,7 +17,7 @@ public class PayController {
     @Autowired
     PayService payService;
 
-    @Value("${server.port}")
+    @Value("server.port")
     private String port;
 
     @RequestMapping(value = "test", method = RequestMethod.GET)
@@ -27,13 +27,14 @@ public class PayController {
 
     @GetMapping("account/{id}")
     public JSONObject getAccountInfo(@PathVariable Integer id) {
-        log.info("端口号是：" + port + "; 执行服务1");
+        log.info("执行端口号：" + port + "；是服务2");
         PayAccount account = payService.getAccountInfo(id);
         return ResponseMsg.success(account);
     }
 
     @GetMapping ("money")
     public JSONObject payMoney(Integer accountId, Long money) {
+        log.info("执行端口号：" + port + "；是服务2");
         return payService.pay(accountId, money);
     }
 }

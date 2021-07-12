@@ -12,6 +12,58 @@
 
 ### 1. eureka
 
+#### 1.1. 使用
+
+- 父级引入依赖管理
+
+  ```xml
+   <dependencyManagement>
+     <dependencies>
+       <dependency>
+         <groupId>org.springframework.cloud</groupId>
+         <artifactId>spring-cloud-dependencies</artifactId>
+         <version>Hoxton.SR1</version>
+         <type>pom</type>
+         <scope>import</scope>
+       </dependency>
+     </dependencies>
+   </dependencyManagement>
+  ```
+
+- 服务端
+
+  - 引入服务相关依赖
+
+  ```xml
+  <dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+  </dependency>
+  ```
+
+  - 添加允许服务端启动注解
+
+    ```
+    @EnableEurekaServer
+    ```
+
+- 客户端
+
+  - 引入客户端相关依赖
+
+    ```xml
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    ```
+
+  - 添加允许客户端启动注解
+
+    ```
+    @EnableEurekaClient
+    ```
+
 ### 2. zookeeper
 
 ### 3. consul

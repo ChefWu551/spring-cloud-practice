@@ -145,7 +145,72 @@ eureka.client.service-url.defaultZone=http://eureka7001.com:7001/eureka, http://
 
   **在template bean中添加注解@Loadblanced**
 
+#### 1.3. 服务发现
+
+- @DiscoveryEnable
+- 引入discoveryClient bean，然后根据对应的bean获取当前eureka服务的信息
+  - 实例的数量
+  - 实例的端口号及对应的ip
+
+#### 1.4. CAP原则
+
+   	CAP原则又称CAP定理，指的是在一个分布式	系统中，一致性（Consistency）、可用性可用性（Availability）、分区容错性（Partition tolerance）。CAP 原则指的是，这三个要最多只能同时实现两点，不可能三者兼顾。
+
+- eureka使用的AP原则
+
+##### 1.4.1. 自我保护原则
+
+##### 1.4.2. 关闭服务端自我保护机制
+
+```properties
+# 关闭自我保护机制
+eureka.server.enable-self-preservation=false
+eureka.server.evication-interval-in-ms=2000
+```
+
+##### 1.4.3. 设置client端心跳包发送
+
+```properties
+# 想服务端发送心跳的时间间隔
+eureka.instance.lease-renewal-interval-in-seconds=1
+# 服务端在收到最后一次心跳后等待时间上线，超时会注销服务
+eureka.instance.lease-expireation-duration-in-seconds=2
+```
+
 ### 2. zookeeper
+
+- 添加相关依赖
+
+```xml
+<dependency>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+</dependency>
+```
+
+- 解决依赖版本和zk版本冲突问题
+
+  ```xml
+  <dependency>
+  	<groupId>org.springframework.cloud</groupId>
+  	<artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+    <exclusions>
+    <!-- 排除自带的zookeeper版本 -->  
+      <exclusion>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+      </exclusion>
+    </exclusions>
+    <!-- 引入新的版本 -->
+    <dependecy>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+      <version>${zk.version}</version>
+    </dependecy>
+  </dependency>
+  ```
+
+  
 
 ### 3. consul
 

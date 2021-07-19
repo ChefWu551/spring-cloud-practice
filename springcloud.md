@@ -220,6 +220,50 @@ eureka.instance.lease-expireation-duration-in-seconds=2
 
 ### 1. Ribbon
 
+​	基于netflix ribbon实现的一套客户端**负载均衡**的工具，主要功能是提供客户端的软件**负载均衡算法和服务调用**；ribbon客户端组件提供一些完善的配置项，如链接超时，重试等。简单的说，就是在配置文件中列出load Balancer（LB）后面的所有机器，ribbon会自动的帮助你基于某种规则（如简单轮询、随机链接等）去链接这些机器。
+
+#### 1.1. 负载均衡分类
+
+ - 进程内LB: 本地负载均衡客户端（例如：ribbon）,在调用微服务接口的时候，会在注册中心上获取注册信息服务列表之后缓存到jvm本地，从而在本地实现rpc远程服务调用技术。
+
+ - 集中式LB: 服务端负载均衡（例如：nginx）：
+
+   请求 -> nginx -> ribbon->server1/server2/..
+
+#### 1.2. 二说restTemplate
+
+​	todo: - 源码解读
+
+- getForEntity
+
+#### 1.3. eureka集成ribbon
+
+#### 1.4. LB的均衡算法
+
+- ribbon默认使用轮训的方式实现负载均衡
+- IRule接口，根据当前接口选择自己的负载均衡算法，扩展负载均衡器
+  - 在springboot中注册IRule对应的组件
+  - 实现对应的负载均衡代码
+- todo: - Ribbon自带的规则源码解读
+- 实现继承使用
+- eureka自带的负载均衡算法
+
+#### 1.5. 替换LB默认的负载均衡算法
+
+- 新建一个工具包，不能包含在app包下及app所在当前包，否则
+
+  ```
+  ```
+
+  
+
+- 自定义类，书写自己的规则
+
+  - 在springboot中注入自己的bean
+  - 直接返回一个规则的实例，并且打印日志
+
+- 启动类添加@RibbonClient(name = "service name", configuration=自定义规则.class)
+
 ### 2. Loadbalancer
 
 ### 3. Feign

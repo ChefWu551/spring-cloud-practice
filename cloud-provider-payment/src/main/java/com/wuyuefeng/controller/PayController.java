@@ -34,6 +34,7 @@ public class PayController {
 
     @GetMapping ("money")
     public JSONObject payMoney(Integer accountId, Long money) {
+        log.info("执行端口号：" + port + "；是服务1");
         return payService.pay(accountId, money);
     }
 }

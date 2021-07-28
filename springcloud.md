@@ -437,9 +437,35 @@ feign.hystrix.enabled=true
 
 #### 1.2. 服务熔断-fallDown
 
-​		达到最大服务访问后，直接拒绝访问，然后调用服务降级的方法，并返回友好提示，降级->熔断->恢复调用
+​		达到最大服务访问后，直接拒绝访问，然后调用服务降级的方法，并返回友好提示，降级->熔断->恢复调用链路
 
+​		熔断一共分成三种，熔断打开，熔断半开，熔断关闭，如果根据方法定义的熔断情况，如果熔断关闭状态下，服务器负载过大，此时熔断会处于半开状态，会有一部分的请求失败，大量负载导致熔断关闭后，此时熔断全开，过段时间服务可以自行恢复，此时服务熔断关闭。
 
+- 添加服务熔断代码
+
+```java
+@HystrixCommand(fallbackMethod = "circuitBreakerHandler", commandProperties = {
+        @HystrixProperty(name = "circuitBreaker.enabled", value = "true"), // 开启断路器
+        @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"), // 异常情况超过最小阈值时，熔断器将会从关闭状态编程半开状态
+        @HystrixProperty(name="circuitBreaker.sleepWindowInMilliseconds", value = "10000"), // 时间范围
+        @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60") // 失败率达到多少后跳闸
+    })
+    public String paymentCircuitBreaker(int id) {
+        if (id < 0) throw new ArithmeticException("id不能是负数");
+
+        String serialNum = UUID.randomUUID().toString();
+        return Thread.currentThread().getName() + ". 调用成功，流水号： " + serialNum;
+    }
+
+    public String circuitBreakerHandler(int id) {
+        return "服务目前熔断，正在恢复中.... 您输入的id： " + id;
+    }
+```
+
+- 测试接口
+  - 使用jmeter请求接口： /hystrix/fallDown/-5，并发3000
+  - 同时使用postman请求接口：/hystrix/fallDown/5
+  - 此时会发现postman请求的接口会返回服务熔断的提醒，过一段时间请求后，恢复正常
 
 #### 1.3. 服务限流-fallLimit
 

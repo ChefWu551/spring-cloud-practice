@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
+
 @RestController
 @RequestMapping("pay")
 @Slf4j
@@ -36,5 +38,13 @@ public class PayController {
     public JSONObject payMoney(Integer accountId, Long money) {
         log.info("执行端口号：" + port + "；是服务1");
         return payService.pay(accountId, money);
+    }
+
+    @GetMapping("timeout")
+    public JSONObject timeoutTest() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(3);
+        JSONObject object = new JSONObject();
+        object.put("app", "timeout");
+        return object;
     }
 }

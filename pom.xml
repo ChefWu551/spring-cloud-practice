@@ -19,6 +19,7 @@
         <module>cloud-provider-histrix-payment</module>
         <module>cloud-provider-histryx-dashboard</module>
         <module>cloud-gateway-1</module>
+        <module>cloud-config</module>
     </modules>
 
     <properties>

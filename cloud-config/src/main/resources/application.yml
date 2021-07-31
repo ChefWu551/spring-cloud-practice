@@ -1,0 +1,21 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ChefWu551/spring-cloud-config.git
+          search-paths:
+            - spring-cloud-config
+          username: 565948592@qq.com # 注意，这里需要账号密码，否认鉴权失败
+          password: wyf23188551
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka

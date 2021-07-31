@@ -522,6 +522,66 @@ feign.hystrix.enabled=true
 
 ### 1. Config
 
+​	统一管理配置，管理各个环境的配置信息。
+
+![spring-cloud-config](./resource/image/spring-cloud-config.jpeg)
+
+#### 1.1. 模拟配置中心获取配置
+
+- 在github上面建立相关的配置中心仓库，放入配置文件
+
+```
+https://github.com/ChefWu551/spring-cloud-config
+```
+
+- 新建配置中心服务，
+
+```java
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@EnableConfigServer
+@EnableEurekaClient
+public class ConfigApp {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigApp.class, args);
+    }
+}
+```
+
+- 配置中心配置项指向代码仓库
+
+```yaml
+server:
+  port: 8088
+
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ChefWu551/spring-cloud-config.git
+          search-paths:
+            - spring-cloud-config
+          username: 565948592@qq.com # 注意，这里需要账号密码，否认鉴权失败
+          password: wyf23188551
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+```
+
+- 访问测试
+
+```
+localhost:8088/master/config-dev.yml
+```
+
+#### 1.2. 
+
 ### 2. Nacos（推荐）
 
 ## 七、服务开发-spring boot

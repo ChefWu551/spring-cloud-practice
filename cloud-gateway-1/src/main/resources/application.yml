@@ -1,0 +1,40 @@
+server:
+  port: 8088
+
+# 单个lur直接通过指定的url指向目标服务地址
+#spring:
+#  application:
+#    name: cloud-gateway
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: payment_routh           # 路由的id，保证唯一性
+#          uri: http://localhost:8081  # 路由地址
+#          predicates:                 # 断言规则，慢慢弱化服务
+#            - Path=/pay/account/**
+#      discovery:
+#        locator:
+#          enabled: true
+
+# 多个微服务时候，通过域名路径来找到对应的微服务，并通过负载均衡的方式来访问
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: payment_routh           # 路由的id，保证唯一性
+          uri: lb://CLOUD-PAYMENT-SERVER  # 路由地址
+          predicates: # 断言规则，慢慢弱化服务
+            - Path=/pay/account/**
+eureka:
+  instance:
+    hostname: cloud-gateway-service
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka, http://eureka7002.com:7002/eureka

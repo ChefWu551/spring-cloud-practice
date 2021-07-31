@@ -279,7 +279,7 @@ eureka.instance.lease-expireation-duration-in-seconds=2
 
 - 启动类添加@RibbonClient(name = "service name", configuration=自定义规则.class)
 
-### 2. Loadbalancer
+### 2. LoadBalancer
 
 ### 3. Feign
 
@@ -488,13 +488,7 @@ feign.hystrix.enabled=true
     - 对方服务器（pay server）超时或宕机了，调用（consumer）不能一直卡死等待，必须有服务降级
     - 对方服务ok，调用者consumer自己出故障或者有自我要求（自己的等待时间小于服务提供者），自己处理降级
 
-#### 1.6. 解决方案
-
-##### 1.6.1. 服务降级
-
-##### 1.6.2. 服务熔断
-
-##### 1.6.3. 服务限流
+#### 1.6. hystrix dashboard
 
 ### 2. Resillience4j
 
@@ -502,9 +496,27 @@ feign.hystrix.enabled=true
 
 ## 五、服务网关
 
-### 1. Zuul
+### 1. Zuul路由网关
 
-### 2. Gateway(推荐)
+### 2. spring-cloud-Gateway(推荐)
+
+​	This project provides an API Gateway built on top of the Spring Ecosystem, including: Spring 5, Spring Boot 2 and Project Reactor. Spring Cloud Gateway aims to provide a simple, yet effective way to route to APIs and provide cross cutting concerns to them such as: security, monitoring/metrics, and resiliency.
+
+​	基于webflux中的reactor-netty响应式编程组件，底层使用了netty通讯框架；基于异步非阻塞模型进行开发的。
+
+#### 2.1. 特性
+
+- 动态路由-route
+- 断言-predicate : 有效时间(类似过期时间的机制)、带指定cookie请求认证、请求头过滤等各种过滤规则
+- 过滤器-filter
+
+### 3. 扩展
+
+- 谈谈微服务网关的理解
+- 为什么要用gateway不用zuul
+  - Zuul 1.x版本是一个基于阻塞I/O的api gateway，因此不支持任何长链接，每次io操作都是从工作线程中选择一个执行，请求线程被阻塞到工作线程完成
+  - spring cloud gateway使用非阻塞API
+- 
 
 ## 六、服务分布式配置-spring cloud config
 
@@ -538,7 +550,7 @@ feign.hystrix.enabled=true
   - system: 与provided类似，但是依赖不会从maven仓库中找，而是从本地仓库获取，有systemPath来指定jar所在的路径
   - Import: 只会在dependecyManagement中使用，标识从其他的pom中导入dependency的配置，例如B项目导入A项目中的包配置
 
-
+### 3. servlet生命周期
 
 
 

@@ -580,7 +580,14 @@ eureka:
 localhost:8088/master/config-dev.yml
 ```
 
-#### 1.2. 
+#### 1.2. 新服务通过配置中心读取配置
+
+#### 1.3. 分布式配置的动态刷新
+
+​	配置文件改变，config的客户端的配置信息是不会改变的，但是config server会发生改变，解决方案：
+
+- 重启config client
+- 
 
 ### 2. Nacos（推荐）
 

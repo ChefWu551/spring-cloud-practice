@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cloud-config-center
+    name: cloud-config-server
   cloud:
     config:
       server:
@@ -14,8 +14,20 @@ spring:
           username: 565948592@qq.com # 注意，这里需要账号密码，否认鉴权失败
           password: wyf23188551
       label: master
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:7001/eureka
+
+# 暴露监控点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'bus-refresh'

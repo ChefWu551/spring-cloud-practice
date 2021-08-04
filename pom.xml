@@ -19,9 +19,9 @@
         <module>cloud-provider-histrix-payment</module>
         <module>cloud-provider-histryx-dashboard</module>
         <module>cloud-gateway-1</module>
-        <module>cloud-config</module>
         <module>cloud-config-consumer</module>
         <module>cloud-config-consumer-1</module>
+        <module>cloud-config-server</module>
     </modules>
 
     <properties>
@@ -49,7 +49,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR1</version>
+                <version>Greenwich.SR2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

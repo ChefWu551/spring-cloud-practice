@@ -1,9 +1,9 @@
 server:
-  port: 8089
+  port: 8090
 
 spring:
   application:
-    name: config-client
+    name: config-client-1
   cloud:
     config:
       label: master

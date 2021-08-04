@@ -20,6 +20,8 @@
         <module>cloud-provider-histryx-dashboard</module>
         <module>cloud-gateway-1</module>
         <module>cloud-config</module>
+        <module>cloud-config-consumer</module>
+        <module>cloud-config-consumer-1</module>
     </modules>
 
     <properties>

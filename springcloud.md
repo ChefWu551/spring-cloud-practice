@@ -582,18 +582,137 @@ localhost:8088/master/config-dev.yml
 
 #### 1.2. 新服务通过配置中心读取配置
 
+- 引入依赖
+
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-config</artifactId>
+</dependency>
+```
+
+- 添加配置项
+
+```yml
+server:
+  port: 8089
+
+spring:
+  application:
+    name: config-client
+  cloud:
+    config:
+      label: master
+      name: config
+      profile: dev
+      uri: http://localhost:8088
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+
+# 暴露监控点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+```
+
+- 获取配置
+
+  localhost:8089/getConfigValue
+
+```java
+@RestController
+@RefreshScope
+public class testController {
+
+    @Value("${config.info}")
+    private String value;
+
+    @RequestMapping("getConfigValue")
+    public String getConfigValue() {
+        return value;
+    }
+}
+```
+
+- 更新配置
+
+  localhost:8089/actuator/refresh
+
+- 再次获取更新的配置
+
+  localhost:8089/getConfigValue
+
 #### 1.3. 分布式配置的动态刷新
 
 ​	配置文件改变，config的客户端的配置信息是不会改变的，但是config server会发生改变，解决方案：
 
 - 重启config client
-- 
 
 ### 2. Nacos（推荐）
 
 ## 七、服务开发-spring boot
 
 ### 1. Bus
+
+​	spring cloud bus 是用来将分布式系统的节点与轻量级消息系统连接起来的框架，他整合了java的事件处理机制和消息中间件的功能。
+
+​	 通过对某个事件进行监听，根据更新的情况通过总线的消息队列，将监听的信息通知到各个对应的服务上面去。
+
+![spring-cloud-bus](./resource/image/spring-cloud-bus.png)
+
+#### 1.1. 安装rabbitMQ
+
+#### 1.2. Bus消息总线的设计思想及原理
+
+ - 设计思想
+
+   - 方案一：利用消息总线出发一个客户端/bus/refresh，而刷新所有客户端的配置
+   - 方案二：利用消息总线出发一个服务端configserver的/bus/refresh端点，而刷新所有的客户端
+   - 综上显然第二种更符合设计原则，因为业务服务器没有必要承担非业务性的东西，例如更新并且通知其他服务拉取最新的配置
+
+- 原理
+
+  - ConfigClient实例都监听MQ中同一个topic（默认是springCloudBus），当一个服务刷新数据的时候，它会把这个信息放入到topic中，这样其他监听同一个topic的服务就能得到通知，然后去更新自身的配置
+
+  ![spring-cloud-bus-server](./resource/image/spring-cloud-bus-server.png)
+
+#### 1.3. 实现
+
+##### 1.3.1. Cloud-config-server
+
+- 依赖添加rabbitmq-bus支持
+- 配置启动文件 - 链接mq的属性文件
+- 配置启动文件 - 暴露bus刷新配置的端点 /actuator/bus-refresh
+
+##### 1.3.2. cloud-config-client
+
+- 依赖添加rabbitmq-bus支持
+- 配置启动文件链接mq的属性文件及暴露bus刷新配置的端点
+
+##### 1.3.3. cloud-config-client-1
+
+- 依赖添加rabbitmq-bus支持
+- 配置启动文件链接mq的属性文件及暴露bus刷新配置的端
+
+##### 1.3.4. 测试
+
+- 发送更新请求，请求配置中心 config-server的 /actuator/bus-refresh 刷新
+- 请求各个client端，然后看看配置是否更新了
+
+##### 1.3.5. 指定通知某个服务进行更新
+
+- 请求Config-server 的接口 /actuator/bus-refresh/{destination}
+
+  - destination参数：eureka里面的 server name：**cloud-payment-server:port**
+
+    ```properties
+    spring.application.name=cloud-payment-server:port
+    ```
 
 ### 2. Nacos（推荐）
 

@@ -643,6 +643,11 @@ public class testController {
 
   localhost:8089/actuator/refresh
 
+  ！！！！重要
+
+  - 这里要注意的是SpringBoot1.5.x的请求是http://localhost:8762/bus/refresh，
+  - 2.x变成：http://localhost:8762/actuator/bus-refresh
+
 - 再次获取更新的配置
 
   localhost:8089/getConfigValue

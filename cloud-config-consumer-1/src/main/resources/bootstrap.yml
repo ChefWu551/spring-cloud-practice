@@ -8,7 +8,7 @@ spring:
     config:
       label: master
       name: config
-      profile: test
+      profile: dev
       uri: http://localhost:8088
 
   rabbitmq:

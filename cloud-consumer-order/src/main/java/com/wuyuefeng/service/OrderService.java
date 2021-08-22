@@ -34,4 +34,8 @@ public class OrderService {
 
         return 0;
     }
+
+    public String getSleuthString() {
+        return restTemplate.getForObject("http://CLOUD-PAYMENT-SERVER/pay/sleuth", String.class);
+    }
 }

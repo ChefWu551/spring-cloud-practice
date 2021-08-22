@@ -643,11 +643,6 @@ public class testController {
 
   localhost:8089/actuator/refresh
 
-  ！！！！重要
-
-  - 这里要注意的是SpringBoot1.5.x的请求是http://localhost:8762/bus/refresh，
-  - 2.x变成：http://localhost:8762/actuator/bus-refresh
-
 - 再次获取更新的配置
 
   localhost:8089/getConfigValue
@@ -660,7 +655,7 @@ public class testController {
 
 ### 2. Nacos（推荐）
 
-## 七、服务开发-spring boot
+## 七、消息总线
 
 ### 1. Bus
 
@@ -706,7 +701,8 @@ public class testController {
 
 ##### 1.3.4. 测试
 
-- 发送更新请求，请求配置中心 config-server的 /actuator/bus-refresh 刷新
+- 发送更新请求，请求配置中心 config-server的 **/actuator/bus-refresh** 刷新
+  - **官方文档解释： The `/actuator/bus-refresh` endpoint clears the `RefreshScope` cache and rebinds `@ConfigurationProperties`**
 - 请求各个client端，然后看看配置是否更新了
 
 ##### 1.3.5. 指定通知某个服务进行更新
@@ -720,6 +716,59 @@ public class testController {
     ```
 
 ### 2. Nacos（推荐）
+
+
+
+## 八、消息中间件整合
+
+### 1. spring-cloud-stream
+
+​	整合对接了各种MQ中间件，统一操作，直接对接各种MQ消息中间件（rabbitMQ/RocketMQ/ActiveMQ/Kafka），**屏蔽底层中间件的差异，降低切换成本，统一消息编程模型**(rocketMQ -> application -> kafka)。
+
+​	应用程序通过input（消费者）或者output（生产者）来与spring cloud stream中binder对象交互，实现了应用程序与消息中间件细节之间的隔离。
+
+![spring-cloud-stream](./resource/image/spring-cloud-stream.png)
+
+#### 1.1. 实现
+
+- 新建一个stream provider
+  - 引入stream-rabbit依赖
+  - 配置输出的properties文件、output的通道信息、bindder信息
+  - 实现业务代码，往中间件发送消息（output 作为生产者，发送消息到rabbitMQ broker）
+- 新建一个stream consumer
+  - 引入stream-rabbit依赖
+  - 修改配置文件、input的通道信息、bindder信息
+  - 实现业务代码，消费中间件的信息
+- 新建另一个stream consumer
+- 
+
+## 九、spring微服务调用检测
+
+​	spring Sleuth 提供分布式服务调用日志跟踪
+
+### 1. 实现
+
+- 引入zipkin依赖
+
+  ```xml
+  <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-zipkin</artifactId>
+  </dependency>
+  ```
+
+- 配置properties文件
+
+  ```properties
+  spring.zipkin.baseUrl=http://localhost:9411
+  spring.sleuth.sampler.rate=1
+  ```
+
+- 运行zipkin jar服务
+
+  ```
+  java -jar zipkin-server-2.23.2-exec.jar
+  ```
 
 ## 其他知识补充
 
@@ -760,5 +809,29 @@ public class testController {
 - 相当于在客户端和服务端中间进行了一层转发，保证内网安全，阻止web攻击
 - 访问原来无法访问的资源，例如翻墙
 
+### 5. Spring-webflux
 
+#### 5.1. 特点
 
+- 区别于webmvc，因为spring-webmvc采用的是spring-webmvc+servlet+tomcat来实现的，是命令式的同步阻塞的
+- Webflux是响应式的，异步非阻塞的，spring-webflux+reactor+netty实现，基于netty是一套异步的，时间驱动的网络，能够开发高性能、高可靠的网络服务
+
+- 非阻塞、异步IO和事件驱动
+
+### 6. 命令式与响应式
+
+- 命令式
+- 响应式
+
+#### 7. 同步与异步、阻塞与非阻塞
+
+- java线程的同步与异步
+  - 从线程角度，在多线程情况下A线程操作某一个资源，为了保证资源的安全性，此时会对当前资源进行加锁，使用同步的方法保证线程锁修改的资源安全且有效。常见的同步策略有如下：
+    - ThreadLocal
+    - Synchronized()
+    - Wait()和notify()
+    - volatile
+  - 异步能够提升性能，但是有可能造成资源修改无效，甚至是死锁
+- 阻塞与非阻塞
+
+### 8. 单线程多路io复用

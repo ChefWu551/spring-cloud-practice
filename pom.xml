@@ -22,6 +22,8 @@
         <module>cloud-config-consumer</module>
         <module>cloud-config-consumer-1</module>
         <module>cloud-config-server</module>
+        <module>cloud-stream-provider</module>
+        <module>cloud-stream-consumer</module>
     </modules>
 
     <properties>

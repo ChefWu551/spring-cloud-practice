@@ -10,7 +10,7 @@ spring:
         git:
           uri: https://github.com/ChefWu551/spring-cloud-config.git
           search-paths: spring-cloud-config
-          username: *11 # 注意，这里需要账号密码，否认鉴权失败
+          username: * # 注意，这里需要账号密码，否认鉴权失败
           password: 1111
           force-pull: true
       label: master

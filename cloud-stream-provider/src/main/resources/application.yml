@@ -1,0 +1,28 @@
+server:
+  port: 8094
+
+spring:
+  application:
+    name: config-client
+  cloud:
+    stream:
+      binder:
+        defaultRabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+      binddings:
+        output:
+          destination: studyExchange
+          content-type: application/json
+          binder: defaultRabbit
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka

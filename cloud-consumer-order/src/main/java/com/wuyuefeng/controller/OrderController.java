@@ -28,4 +28,9 @@ public class OrderController {
         if (isSuccess == 1) return ResponseMsg.success("插入成功");
         return ResponseMsg.fail();
     }
+
+    @GetMapping("slethTest")
+    public String getSleuthString() {
+        return orderService.getSleuthString();
+    }
 }

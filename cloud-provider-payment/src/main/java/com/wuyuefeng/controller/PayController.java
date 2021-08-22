@@ -47,4 +47,9 @@ public class PayController {
         object.put("app", "timeout");
         return object;
     }
+
+    @GetMapping("sleuth")
+    public String getSubSleuth() {
+        return "this value is from payment";
+    }
 }
